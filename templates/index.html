@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>StegoVault — Secure Image Steganography</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="logo">SV</span><div><b>StegoVault</b><small>Secure Image Steganography</small></div></div>
+  <span class="status">● Local processing</span>
+</header>
+
+<main class="container">
+  <section class="hero">
+    <div>
+      <span class="pill">FINAL-YEAR PROJECT</span>
+      <h1>Hide a secret message<br><span>inside a PNG image.</span></h1>
+      <p>Encrypt → encode → download. Your message is protected by a password before it is hidden using LSB steganography.</p>
+    </div>
+  </section>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="encode">🔐 Encode Message</button>
+    <button class="tab" data-tab="decode">🔓 Decode Message</button>
+    <button class="tab" data-tab="binary">01 Binary Converter</button>
+  </div>
+
+  <section id="encode" class="panel tab-content active">
+    <div class="grid">
+      <div>
+        <h2>1. Choose PNG</h2>
+        <label class="drop" id="encodeDrop">
+          <input type="file" id="encodeImage" accept="image/png">
+          <span class="big">＋</span><b>Upload PNG image</b><small>PNG recommended • no JPEG</small>
+        </label>
+        <div id="encodePreview" class="preview"></div>
+        <div id="capacity" class="capacity">Upload an image to check capacity.</div>
+      </div>
+
+      <div>
+        <h2>2. Secret message</h2>
+        <textarea id="message" maxlength="100000" placeholder="Type the message you want to hide..."></textarea>
+
+        <h2>3. Password</h2>
+        <div class="passwordRow">
+          <input id="encPassword" type="password" placeholder="Enter a strong password">
+          <button class="ghost" onclick="togglePassword('encPassword')">Show</button>
+        </div>
+
+        <h2>4. Resilience mode</h2>
+        <select id="resilience">
+          <option value="normal">Normal — maximum capacity</option>
+          <option value="repeat3">Extra redundancy — 3× repeated bits</option>
+        </select>
+        <p class="hint">Important: WhatsApp/Instagram image compression can change pixels. No simple LSB method can guarantee survival after image recompression. For sharing, send the generated PNG as a <b>Document/File</b>.</p>
+
+        <button class="primary" onclick="encode()">🔐 Encrypt & Hide Message</button>
+        <div id="encodeMsg" class="message"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="decode" class="panel tab-content">
+    <div class="grid">
+      <div>
+        <h2>1. Choose encoded PNG</h2>
+        <label class="drop">
+          <input type="file" id="decodeImage" accept="image/png">
+          <span class="big">＋</span><b>Upload encoded PNG</b><small>Use the original PNG file</small>
+        </label>
+        <div id="decodePreview" class="preview"></div>
+      </div>
+      <div>
+        <h2>2. Password</h2>
+        <div class="passwordRow">
+          <input id="decPassword" type="password" placeholder="Enter the same password">
+          <button class="ghost" onclick="togglePassword('decPassword')">Show</button>
+        </div>
+        <h2>3. Resilience mode</h2>
+        <select id="decResilience">
+          <option value="normal">Normal</option>
+          <option value="repeat3">Extra redundancy — 3× repeated bits</option>
+        </select>
+        <button class="primary" onclick="decode()">🔓 Decode Secret Message</button>
+        <div id="decodeMsg" class="message"></div>
+        <textarea id="decodedText" readonly placeholder="Decoded message will appear here..."></textarea>
+      </div>
+    </div>
+  </section>
+
+  <section id="binary" class="panel tab-content">
+    <div class="binaryGrid">
+      <div>
+        <h2>Text → Binary</h2>
+        <textarea id="textInput" placeholder="Enter text..."></textarea>
+        <button class="primary" onclick="convertBinary('text_to_binary')">Convert to 01</button>
+      </div>
+      <div>
+        <h2>Binary → Text</h2>
+        <textarea id="binaryInput" placeholder="Example: 01001000 01101001"></textarea>
+        <button class="primary" onclick="convertBinary('binary_to_text')">Convert to text</button>
+      </div>
+    </div>
+    <div id="binaryResult" class="resultBox">Result will appear here.</div>
+  </section>
+
+  <section class="features">
+    <div><b>🔑 Password Protection</b><span>AES-GCM encryption + Scrypt key derivation</span></div>
+    <div><b>🖼️ PNG First</b><span>Lossless format preserves the embedded LSB data</span></div>
+    <div><b>📊 Capacity Check</b><span>Checks image capacity before encoding</span></div>
+    <div><b>01 Binary Tool</b><span>Educational text/binary conversion</span></div>
+  </section>
+
+  <footer>StegoVault • B.Sc. Computer Science Project • Use only with files you own or have permission to process.</footer>
+</main>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
